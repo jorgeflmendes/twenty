@@ -3,6 +3,7 @@ import '@cyntler/react-doc-viewer/dist/index.css';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { getFileNameAndExtension } from '~/utils/file/getFileNameAndExtension';
+import CSVViewer from './CSVViewer';
 
 const StyledDocumentViewerContainer = styled.div`
   display: flex;
@@ -87,9 +88,18 @@ export const DocumentViewer = ({
   documentUrl,
 }: DocumentViewerProps) => {
   const theme = useTheme();
-
+  
   const { extension } = getFileNameAndExtension(documentName);
   const fileExtension = extension?.toLowerCase().replace('.', '') ?? '';
+  
+  if (fileExtension === 'csv') {
+    return (
+      <StyledDocumentViewerContainer theme={theme}>
+        <CSVViewer documentUrl={documentUrl} />
+      </StyledDocumentViewerContainer>
+    );
+  }
+  
   const mimeType = PREVIEWABLE_EXTENSIONS.includes(fileExtension)
     ? MIME_TYPE_MAPPING[fileExtension]
     : undefined;
